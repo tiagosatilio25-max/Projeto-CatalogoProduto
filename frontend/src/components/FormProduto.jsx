@@ -1,17 +1,26 @@
 import { useState } from "react";
 
-export default function FormProduto({aoCadastrar}){
+function FormProduto({aoCadastrar}){
  
 const [nome, setNome] = useState("");
 const [descricao, setDescricao] = useState("");
 const [preco, setPreco] = useState("");
 
+const [erro , setErro] = useState ("");
+
 function enviarFormulario(evento){
     evento.preventDefault();
 
-    if(!nome.trim() || !preco){
+    if(!nome.trim()){
+        setErro("Digite o nome do produto")
         return;
     }
+
+  if(!preco || Number(preco) <= 0){
+        setErro("O preço deve ser maior que zero")
+        return;
+    }
+    setErro("");
 
     aoCadastrar({
         nome: nome.trim(),
@@ -22,13 +31,21 @@ function enviarFormulario(evento){
     setNome("");
     setDescricao("");
     setPreco("");
-
-
-}
+    }
 
     return(
         <form className="formulario" onSubmit={enviarFormulario}>
-            <h2>Nome produto</h2>
+
+         <div ClassName ="titulo-Formulario">
+
+            <div>
+            <span className = "tag">Novo Item</span>
+            <h2>Cadastrar produto</h2>
+         </div> 
+            <span  className = "status-dot">ONLINE</span>
+        </div>
+        
+    <div className="campos-formulario">
 
         <label>
             Nome
@@ -63,7 +80,7 @@ function enviarFormulario(evento){
             placeholder="0,00"
             />
         </label>
-
+    </div>
         <button type="submit">Cadastrar produto</button>
 
 
@@ -72,3 +89,4 @@ function enviarFormulario(evento){
 
     )
 }
+export default FormProduto;

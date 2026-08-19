@@ -1,7 +1,8 @@
 const express = require("express");
+
 const {
-  listarProdutos,
-  cadastrarProduto
+    listarProdutos,
+    cadastrarProduto
 } = require("../controllers/produtoController");
 
 const router = express.Router();

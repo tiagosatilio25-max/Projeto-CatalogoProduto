@@ -1,13 +1,13 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
+// https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-
-  // Encaminha /api para o backend durante o desenvolvimento.
-  server: {
+   server: {
     proxy: {
-      "/api": "http://localhost:3000"
+      '/api': 'http://localhost:3000'
     }
   }
-});
+
+})

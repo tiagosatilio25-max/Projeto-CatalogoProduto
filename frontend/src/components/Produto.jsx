@@ -26,6 +26,21 @@ export default function Produto({ produto }) {
                 </strong>
             </div>
 
+            {/* ==================== NOVO: botões do CRUD ==================== */}
+            <div className = "acoes-card">
+                <button type="button" className="botao-editar" onClick={() => aoEditar(prdouto)}>
+                    Editar
+                </button>
+
+                <button type="button" className="botao-excluir" onClick={() => aoExcluir(produto.id)}> 
+                    Excluir
+                </button>
+
+            </div>
+                  {/* ============================================================= */}
+
         </article>
     );
 }
+
+export default Produto;

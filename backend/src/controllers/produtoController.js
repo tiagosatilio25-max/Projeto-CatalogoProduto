@@ -25,7 +25,69 @@ function cadastrarProduto(req, res){
     res.status(201).json(novoProduto);
 }
 
+//============================================================
+// ALTERAR PRODUTO
+// ============================================================
+
+function alterarProduto(req, res) {
+
+    const id = Number(req.param.id);
+
+    const { nome, descricao, preso } = req.body;
+
+    const produto = produtos.find(produto => produto.id === id);
+
+    if (!produto) {
+
+        return res.status(400).json({
+            mensagem: "Produto não encontrado."
+        });
+    }
+
+    if (!nome || preco === undefined) {
+
+        return res.status(400).json({
+            mensagem: "Nome e preço são obrigatórios."
+        });
+    }
+
+    produto.nome = nome;
+    produto.descricao = descricao || "";
+    produto.preco = Number(preco);
+
+    res.json(produto);
+}
+
+
+// ============================================================
+// EXCLUIR PRODUTO
+// ============================================================
+
+function excluirProduto(req, res) {
+
+    const id = Number(req.params.id);
+
+    const indice = produtos.findIndex(produto => produto.id === id);
+
+    if (indice === -1) {
+
+        return res.status(404).json({
+            mensagem: "Produto não encontrado."
+        });
+
+    }
+
+    produtos.splice(indice, 1);
+
+    res.status(200).json({
+        mensagem: "Produto excluído com sucesso."
+    });
+}
+
+
 module.exports = {
     listarProdutos,
-    cadastrarProduto
+    cadastrarProduto,
+    alterarProduto,
+    excluirProduto
 };

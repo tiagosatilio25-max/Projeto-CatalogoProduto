@@ -56,7 +56,7 @@ function enviarFormulario(evento){
 
     if(produtoEmEdicao){
         aoAlterar({
-            id: produtoEmEdicao.id
+            id: produtoEmEdicao.id,
             ...produto
         });
     }else{

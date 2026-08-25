@@ -1,4 +1,4 @@
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "./components/Header";
 import FormProduto from "./components/FormProduto";
 import ListaProdutos from "./components/ListaProdutos";
@@ -10,6 +10,10 @@ function App() {
   const [mensagem, setMensagem] = useState("");
 
   const [busca, setBusca] = useState("");
+
+  // ==================== ALTERADO: estado para edição ====================
+  const [produtoEmEdicao, setProdutoEmEdicao] = useState(null);
+  // ======================================================================
 
   // Busca os produtos quando a aplicação é carregada.
   async function carregarProdutos() {
@@ -47,13 +51,75 @@ function App() {
 
       const novoProduto = await resposta.json();
 
-      // Atualiza o estado sem precisar recarregar a página.
       setProdutos((produtosAtuais) => [...produtosAtuais, novoProduto]);
       setMensagem("Produto cadastrado com sucesso.");
     } catch (erro){
       setMensagem("Não foi possível cadastrar o produto.", erro);
     }
   }
+
+  async function alterarProduto(produto) {
+    setMensagem("");
+
+    try {
+      const resposta = await fetch(`/api/produtos/${produto.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(produto)
+      });
+
+      if (!resposta.ok) {
+        const erro = await resposta.json();
+        setMensagem(erro.mensagem);
+        return;
+      }
+
+      const produtoAlterado = await resposta.json();
+
+      setProdutos((produtosAtuais) =>
+        produtosAtuais.map((item) =>
+          item.id === produtoAlterado.id ? produtoAlterado : item
+        )
+      );
+
+      setProdutoEmEdicao(null);
+      setMensagem("Produto alterado com sucesso.");
+    } catch (erro) {
+      setMensagem("Não foi possível alterar o produto.", erro);
+    }
+  }
+  // 
+
+  async function excluirProduto(id) {
+    setMensagem("");
+
+    try {
+      const resposta = await fetch(`/api/produtos/${id}`, {
+        method: "DELETE"
+      });
+
+      if (!resposta.ok) {
+        const erro = await resposta.json();
+        setMensagem(erro.mensagem);
+        return;
+      }
+
+      setProdutos((produtosAtuais) =>
+        produtosAtuais.filter((produto) => produto.id !== id)
+      );
+
+      if (produtoEmEdicao?.id === id) {
+        setProdutoEmEdicao(null);
+      }
+
+      setMensagem("Produto excluído com sucesso.");
+    } catch (erro) {
+      setMensagem("Não foi possível excluir o produto.", erro);
+    }
+  }
+  // 
 
   const produtosFiltrados = produtos.filter((produto)=> 
 
@@ -85,7 +151,13 @@ function App() {
           </div>
         </section>
 
-        <FormProduto  aoCadastrar={cadastrarProduto} />
+        <FormProduto
+          aoCadastrar={cadastrarProduto}
+          aoAlterar={alterarProduto}
+          produtoEmEdicao={produtoEmEdicao}
+          aoCancelarEdicao={() => setProdutoEmEdicao(null)}
+        />
+        {/*  */}
 
         {mensagem && <p className="mensagem"> {mensagem}</p>}
 
@@ -104,7 +176,13 @@ function App() {
           />
         </section>
 
-        <ListaProdutos produtos={produtosFiltrados} busca ={busca}/>
+        <ListaProdutos
+          produtos={produtosFiltrados}
+          busca={busca}
+          aoEditar={setProdutoEmEdicao}
+          aoExcluir={excluirProduto}
+        />
+        
       </main>
 
       <Footer />

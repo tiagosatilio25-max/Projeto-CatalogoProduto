@@ -11,11 +11,9 @@ function App() {
 
   const [busca, setBusca] = useState("");
 
-  // ==================== ALTERADO: estado para edição ====================
   const [produtoEmEdicao, setProdutoEmEdicao] = useState(null);
-  // ======================================================================
+  // 
 
-  // Busca os produtos quando a aplicação é carregada.
   async function carregarProdutos() {
     try {
       const resposta = await fetch("/api/produtos");

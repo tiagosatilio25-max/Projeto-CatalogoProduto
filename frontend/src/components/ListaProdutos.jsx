@@ -1,6 +1,6 @@
 import Produto from "./Produto";
 
-function ListaProdutos({ produtos, busca }){
+function ListaProdutos({ produtos, busca, aoEditar, aoExcluir }){
 
     if (produtos.length === 0){
 
@@ -29,7 +29,8 @@ function ListaProdutos({ produtos, busca }){
             </div>
             <div className="grid">
                 {produtos.map((produto) => (
-                    <Produto key={produto.id} produto={produto} />
+                    <Produto key={produto.id} produto={produto} 
+                    />
                 ))}
             </div>
         </section>

@@ -1,12 +1,36 @@
-import { useState } from "react";
+import {useEffect ,useState } from "react";
 
-function FormProduto({aoCadastrar}){
+function FormProduto({aoCadastrar, aoAlterar, produtoEmEdicao, aoCancelarEdicao}){
  
 const [nome, setNome] = useState("");
 const [descricao, setDescricao] = useState("");
 const [preco, setPreco] = useState("");
 
 const [erro , setErro] = useState ("");
+
+
+useEffect(() =>{
+    if (produtoEmEdicao){
+        setNome(produtoEmEdicao.nome);
+        setDescricao(produtoEmEdicao.descricao || "");
+        setPreco(produtoEmEdicao);
+    }
+},[produtoEmEdicao]);
+
+function limparFormulario(){
+    setNome("");
+    setDescricao("");
+    setPreco("");
+    setErro("");
+}
+
+
+
+
+
+
+
+
 
 function enviarFormulario(evento){
     evento.preventDefault();
@@ -20,17 +44,36 @@ function enviarFormulario(evento){
         setErro("O preço deve ser maior que zero")
         return;
     }
+
     setErro("");
 
-    aoCadastrar({
-        nome: nome.trim(),
-        descricao: descricao.trim(),
-        preco: Number(preco)
-    });
+    
+    const produto = {
+      nome: nome.trim(),
+      descricao: descricao.trim(),
+      preco: Number(preco)
+    };
+
+    if(produtoEmEdicao){
+        aoAlterar({
+            id: produtoEmEdicao.id
+            ...produto
+        });
+    }else{
+        aoCadastrar(produto);
+    }
+
+    limparFormulario();
 
     setNome("");
     setDescricao("");
     setPreco("");
+
+        }
+    
+    function aoCancelarEdicao(){
+        limparFormulario();
+        aoCancelarEdicao();
     }
 
     return(
@@ -39,8 +82,8 @@ function enviarFormulario(evento){
          <div ClassName ="titulo-Formulario">
 
             <div>
-            <span className = "tag">Novo Item</span>
-            <h2>Cadastrar produto</h2>
+            <span className = "tag">{produtoEmEdicao ? "Editando item " : "Novo Item"}</span>
+            <h2>{produtoEmEdicao ? "Alterar produto" : "Cadastrar produto"}</h2>
          </div> 
             <span  className = "status-dot">ONLINE</span>
         </div>
@@ -81,11 +124,18 @@ function enviarFormulario(evento){
             />
         </label>
     </div>
-        <button type="submit">Cadastrar produto</button>
-
-
-
-        </form>
+    <div className="acoes-formulario" >
+        <button type="submit">
+        {produtoEmEdicao ? "Salvar alterações" : "+ Cadastrar produto"}
+            </button>
+        {produtoEmEdicao && (
+            <button type="button" classname="botao-cancelar" onclick={cancelarEdicao}>
+            Cancelar
+            </button>
+        )}
+    </div>
+        {erro && <p className = "mensagem-erro">{erro}</p>}
+     </form>
 
     )
 }

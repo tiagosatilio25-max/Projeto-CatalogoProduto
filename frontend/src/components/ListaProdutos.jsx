@@ -1,17 +1,13 @@
 import Produto from "./Produto";
 
-<<<<<<< HEAD
-function ListaProdutos({ produtos, busca, aoEditar, aoExcluir }){
-=======
-// ALTERADO: recebendo aoEditar e aoExcluir
+
+
 function ListaProdutos({ produtos, busca, aoEditar, aoExcluir }) {
->>>>>>> 34d77736f46df7ee4de12391402953c443bf5f53
 
 
   if (produtos.length === 0) {
    
     return(
-<<<<<<< HEAD
         <section className="secao-produtos">
             <div className="cabecalho-lista">
                 <div>
@@ -28,7 +24,7 @@ function ListaProdutos({ produtos, busca, aoEditar, aoExcluir }) {
             </div>
         </section>
     );
-=======
+
       <section className="estado-vazio">
 
            <span className="icone-vazio">🔎</span> 
@@ -44,7 +40,7 @@ function ListaProdutos({ produtos, busca, aoEditar, aoExcluir }) {
             </p>
 
       </section>
-    )
+    
   }
 
   return (
@@ -79,7 +75,6 @@ function ListaProdutos({ produtos, busca, aoEditar, aoExcluir }) {
       </div>
     </section>
   );
->>>>>>> 34d77736f46df7ee4de12391402953c443bf5f53
 }
 
 export default ListaProdutos;

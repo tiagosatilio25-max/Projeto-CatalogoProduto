@@ -1,18 +1,19 @@
 const express = require("express");
 
-const{
-    listarProdutos,
-    cadastrarProduto,
-    alterarProduto,
-    excluirProduto
+const {
+
+  listarProdutos,
+  cadastrarProduto,
+  alterarProduto,
+  excluirProduto
 
 } = require("../controllers/produtoController");
 
-const router = express = express.router();
+const router = express.Router();
 
 router.get("/", listarProdutos);
 
-router.post("/", listarProdutos);
+router.post("/", cadastrarProduto);
 
 router.put("/:id", alterarProduto);
 
